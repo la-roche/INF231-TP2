@@ -1,4 +1,5 @@
-Problème
+DOSSIER ALGORITHMIQUE
+-Problème
 Insérer un nouvel élément dans une liste doublement chaînée tout en maintenant l’ordre trié des éléments.
 -Principe
 • Parcourir la liste à partir de la tête ou de la queue (selon le sens du tri).
