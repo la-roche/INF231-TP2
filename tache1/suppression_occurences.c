@@ -1,37 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node {
+typedef struct Cellule {
     int val;
-    struct Node *next;
-} Node;
+    struct Cellule *next;
+} Cellule;
 
 /* Insert at tail (preserve input order) */
-void insert_tail(Node **head, int value) {
-    Node *n = malloc(sizeof(Node));
-    if (!n) { perror("malloc"); exit(EXIT_FAILURE); }
-    n->val = value;
-    n->next = NULL;
+void insert_tail(Cellule **head, int value) {
+    Cellule *c = malloc(sizeof(Cellule));
+    if (!c) { perror("malloc"); exit(EXIT_FAILURE); }
+    c->val = value;
+    c->next = NULL;
     if (*head == NULL) {
-        *head = n;
+        *head = c;
     } else {
-        Node *t = *head;
+        Cellule *t = *head;
         while (t->next) t = t->next;
-        t->next = n;
+        t->next = c;
     }
 }
 
 /* Delete all occurrences of 'x' */
-void delete_occurrences(Node **head, int x) {
+void delete_occurrences(Cellule **head, int x) {
     while (*head && (*head)->val == x) {
-        Node *tmp = *head;
+        Cellule *tmp = *head;
         *head = (*head)->next;
         free(tmp);
     }
-    Node *cur = *head;
+    Cellule *cur = *head;
     while (cur && cur->next) {
         if (cur->next->val == x) {
-            Node *tmp = cur->next;
+            Cellule *tmp = cur->next;
             cur->next = tmp->next;
             free(tmp);
         } else {
@@ -41,18 +41,18 @@ void delete_occurrences(Node **head, int x) {
 }
 
 /* Print list */
-void print_list(Node *head) {
-    Node *p = head;
+void print_list(Cellule *head) {
+    Cellule *p = head;
     while (p) {
         printf("%d->", p->val);
         p = p->next;
     }
-    printf("\n");
+    printf("NULL\n");
 }
 
 /* Free whole list */
-void free_list(Node *head) {
-    Node *p;
+void free_list(Cellule *head) {
+    Cellule *p;
     while (head) {
         p = head;
         head = head->next;
@@ -61,7 +61,7 @@ void free_list(Node *head) {
 }
 
 int main(void) {
-    Node *head = NULL;
+    Cellule *head = NULL;
     int n, x, i;
 
     puts("##########################    Hello !!!  ##########################");
@@ -73,7 +73,11 @@ int main(void) {
 
     for (i = 1; i <= n; ++i) {
         printf("Entrez la valeur %d:  ", i);
-        if (scanf("%d", &x) != 1) { fprintf(stderr, "Entree invalide.\n"); free_list(head); return 1; }
+        if (scanf("%d", &x) != 1) {
+            fprintf(stderr, "Entree invalide.\n");
+            free_list(head);
+            return 1;
+        }
         insert_tail(&head, x);
     }
 
@@ -81,7 +85,7 @@ int main(void) {
 
     /* Boucle de suppression : entrer -1 pour quitter */
     while (1) {
-        printf("\nEntrez l'element a suprimer (ou -1 pour quitter) :  ");
+        printf("\nEntrez l'element a supprimer (ou -1 pour quitter) :  ");
         if (scanf("%d", &x) != 1) break;
         if (x == -1) break;
         delete_occurrences(&head, x);
